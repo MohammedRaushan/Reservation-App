@@ -1,11 +1,15 @@
 package org.skylite.reservationapp.exception;
 
-import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.skylite.reservationapp.dto.ResponseStructure;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
@@ -19,13 +23,16 @@ public class ReservationApiExceptionHandler {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(structure);
 	}
 	
-	@ExceptionHandler(SQLIntegrityConstraintViolationException.class)
-	public ResponseEntity<ResponseStructure<String>> handleIntegrityException(SQLIntegrityConstraintViolationException exception) {
-		ResponseStructure<String> structure = new ResponseStructure<>();
-		structure.setData("Data already exists");
-		structure.setMessage(exception.getMessage());
-		structure.setStatusCode(HttpStatus.BAD_REQUEST.value());
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(structure);
+	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public Map<String, String> handleMANVE(MethodArgumentNotValidException exception) {
+		Map<String, String> errors = new HashMap<>();
+		exception.getBindingResult().getAllErrors().forEach((error)->{
+			String fieldName = ((FieldError)error).getField();
+			String errorMessage = error.getDefaultMessage();
+			errors.put(fieldName, errorMessage);
+		});
+		return errors;
 	}
 	
 //	User based Exceptions

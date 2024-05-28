@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -23,12 +25,12 @@ public class UserController {
 	private UserService service;
 	
 	@PostMapping
-	public ResponseEntity<ResponseStructure<UserResponse>> saveUser(@RequestBody UserRequest userRequest) {
+	public ResponseEntity<ResponseStructure<UserResponse>> saveUser(@Valid @RequestBody UserRequest userRequest) {
 		return service.saveUser(userRequest);
 	}
 	
 	@PutMapping("{id}")
-	public ResponseEntity<ResponseStructure<UserResponse>> updateUser(@RequestBody UserRequest userRequest, @PathVariable int id) {
+	public ResponseEntity<ResponseStructure<UserResponse>> updateUser(@Valid @RequestBody UserRequest userRequest, @PathVariable int id) {
 		return service.updateUser(userRequest, id);
 	}
 	@GetMapping("/{id}")

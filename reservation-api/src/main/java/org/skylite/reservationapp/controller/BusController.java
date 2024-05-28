@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/bus")
 public class BusController {
@@ -23,12 +25,12 @@ public class BusController {
 	private BusService service;
 	
 	@PostMapping("/{id}")
-	public ResponseEntity<ResponseStructure<BusResponse>> saveBus(@RequestBody BusRequest busRequest, @PathVariable(name="id") int admin_id) {
+	public ResponseEntity<ResponseStructure<BusResponse>> saveBus(@Valid @RequestBody BusRequest busRequest, @PathVariable(name="id") int admin_id) {
 		return service.saveBus(busRequest, admin_id);
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<ResponseStructure<BusResponse>> updateBus(@RequestBody BusRequest busRequest,@PathVariable int id) {
+	public ResponseEntity<ResponseStructure<BusResponse>> updateBus(@Valid @RequestBody BusRequest busRequest,@PathVariable int id) {
 		return service.updateBus(busRequest, id);
 	}
 	

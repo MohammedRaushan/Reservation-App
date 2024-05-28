@@ -16,18 +16,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/admins")
 public class AdminController {
 	@Autowired
 	private AdminService service;
 	@PostMapping
-	public ResponseEntity<ResponseStructure<AdminResponse>> saveAdmin(@RequestBody AdminRequest adminRequest){
+	public ResponseEntity<ResponseStructure<AdminResponse>> saveAdmin(@Valid @RequestBody AdminRequest adminRequest){
 		return service.saveAdmin(adminRequest);
 	}
 	
 	@PutMapping("{id}")
-	public ResponseEntity<ResponseStructure<AdminResponse>> updateAdmin(@RequestBody AdminRequest adminRequest, @PathVariable int id) {
+	public ResponseEntity<ResponseStructure<AdminResponse>> updateAdmin(@Valid @RequestBody AdminRequest adminRequest, @PathVariable int id) {
 		return service.updateAdmin(adminRequest, id);
 	}
 	
