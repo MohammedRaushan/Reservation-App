@@ -5,14 +5,14 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.2.5</version>
+		<version>3.3.0</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>org.skylite</groupId>
-	<artifactId>Reservation-Api</artifactId>
+	<artifactId>reservation-api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>Reservation-Api</name>
-	<description>Spring Boot Project for Merchant App</description>
+	<name>reservation-api</name>
+	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>

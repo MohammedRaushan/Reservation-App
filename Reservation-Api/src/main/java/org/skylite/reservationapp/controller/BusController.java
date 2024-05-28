@@ -1,8 +1,8 @@
 package org.skylite.reservationapp.controller;
 
 import org.skylite.reservationapp.dto.BusRequest;
+import org.skylite.reservationapp.dto.BusResponse;
 import org.skylite.reservationapp.dto.ResponseStructure;
-import org.skylite.reservationapp.model.Bus;
 import org.skylite.reservationapp.service.BusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,22 +23,22 @@ public class BusController {
 	private BusService service;
 	
 	@PostMapping("/{id}")
-	public ResponseEntity<ResponseStructure<Bus>> saveBus(@RequestBody BusRequest busRequest, @PathVariable(name="id") int admin_id) {
+	public ResponseEntity<ResponseStructure<BusResponse>> saveBus(@RequestBody BusRequest busRequest, @PathVariable(name="id") int admin_id) {
 		return service.saveBus(busRequest, admin_id);
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<ResponseStructure<Bus>> updateBus(@RequestBody BusRequest busRequest,@PathVariable int id) {
+	public ResponseEntity<ResponseStructure<BusResponse>> updateBus(@RequestBody BusRequest busRequest,@PathVariable int id) {
 		return service.updateBus(busRequest, id);
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<ResponseStructure<Bus>> getBus(@PathVariable int id) {
+	public ResponseEntity<ResponseStructure<BusResponse>> getBus(@PathVariable int id) {
 		return service.getBus(id);
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<ResponseStructure<Bus>> deleteBus(@PathVariable(name="id") int adminId, @RequestParam int busId) {
+	public ResponseEntity<ResponseStructure<String>> deleteBus(@PathVariable(name="id") int adminId, @RequestParam int busId) {
 		return service.deleteBus(busId, adminId);
 	}
 }
