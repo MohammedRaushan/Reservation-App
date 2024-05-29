@@ -1,5 +1,6 @@
 package org.skylite.reservationapp.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -95,6 +96,22 @@ public class BusService {
 			throw new BusNotFoundException("Invalid Bus Id");
 		}
 		throw new AdminNotFoundException("Invalid Admin Id");
+	}
+	
+	public ResponseEntity<ResponseStructure<List<BusResponse>>> getBus(String fromLoc, String toLoc) {
+		ResponseStructure<List<BusResponse>> structure = new ResponseStructure<>();
+		List<Bus> buses = busDao.getBus(fromLoc, toLoc);
+		if(buses.size()<1) {
+			throw new NoBusPresentException("No bus with given from and to locations");
+		}
+		List<BusResponse> resBus = new ArrayList<>();
+		buses.forEach((bus)->{
+			resBus.add(mapToBusResponse(bus));
+		});
+		structure.setData(resBus);
+		structure.setMessage("List of buses with given From and To locations");
+		structure.setStatusCode(HttpStatus.OK.value());
+		return ResponseEntity.status(HttpStatus.OK).body(structure);
 	}
 
 	private Bus mapToBus(BusRequest busRequest) {

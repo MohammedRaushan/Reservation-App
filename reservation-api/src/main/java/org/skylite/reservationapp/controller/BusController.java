@@ -1,5 +1,7 @@
 package org.skylite.reservationapp.controller;
 
+import java.util.List;
+
 import org.skylite.reservationapp.dto.BusRequest;
 import org.skylite.reservationapp.dto.BusResponse;
 import org.skylite.reservationapp.dto.ResponseStructure;
@@ -42,5 +44,9 @@ public class BusController {
 	@DeleteMapping("/{id}")
 	public ResponseEntity<ResponseStructure<String>> deleteBus(@PathVariable(name="id") int adminId, @RequestParam int busId) {
 		return service.deleteBus(busId, adminId);
+	}
+	@GetMapping("/get-by-locations")
+	public ResponseEntity<ResponseStructure<List<BusResponse>>> getBus(@RequestParam String from,@RequestParam String to) {
+		return service.getBus(from, to);
 	}
 }

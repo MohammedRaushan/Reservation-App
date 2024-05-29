@@ -1,5 +1,6 @@
 package org.skylite.reservationapp.dao;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.skylite.reservationapp.model.Bus;
@@ -22,6 +23,10 @@ public class BusDao {
 	
 	public void deleteBus(Bus bus) {
 		busRepo.delete(bus);
+	}
+	
+	public List<Bus> getBus(String fromLoc, String toLoc){
+		return busRepo.findByFromLocAndToLoc(fromLoc, toLoc);
 	}
 	
 }
