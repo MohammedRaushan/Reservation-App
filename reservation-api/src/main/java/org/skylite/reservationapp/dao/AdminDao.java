@@ -16,7 +16,7 @@ public class AdminDao {
 		return adminRepository.save(admin);
 	}
 	
-	public Optional<Admin> findById(int id) {
+	public Optional<Admin> getAdmin(int id) {
 		return adminRepository.findById(id);
 	}
 	
@@ -30,5 +30,9 @@ public class AdminDao {
 	
 	public Optional<Admin> verifyByEmailAndPassword(String email, String password){
 		return adminRepository.findByEmailAndPassword(email, password);
+	}
+	
+	public Optional<Admin> getAdmin(String email){
+		return adminRepository.findByEmail(email);
 	}
 }

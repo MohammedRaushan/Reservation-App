@@ -29,7 +29,7 @@ public class AdminService {
 	
 	public ResponseEntity<ResponseStructure<AdminResponse>> updateAdmin(AdminRequest adminRequest, int id) {
 		ResponseStructure<AdminResponse> structure = new ResponseStructure<>();
-		Optional<Admin> recAdmin = adminDao.findById(id);
+		Optional<Admin> recAdmin = adminDao.getAdmin(id);
 		if(recAdmin.isPresent()) {
 			Admin dbAdmin = recAdmin.get();
 			dbAdmin.setId(id);
@@ -49,7 +49,19 @@ public class AdminService {
 	
 	public ResponseEntity<ResponseStructure<AdminResponse>> findAdmin(int id) {
 		ResponseStructure<AdminResponse> structure = new ResponseStructure<>();
-		Optional<Admin> recAdmin = adminDao.findById(id);
+		Optional<Admin> recAdmin = adminDao.getAdmin(id);
+		if(recAdmin.isPresent()) {
+			structure.setData(mapToAdminResponse(recAdmin.get()));
+			structure.setMessage("Admin Found");
+			structure.setStatusCode(HttpStatus.OK.value());
+			return ResponseEntity.status(HttpStatus.OK).body(structure);
+		}
+		throw new AdminNotFoundException("Invalid Admin Id");
+	}
+	
+	public ResponseEntity<ResponseStructure<AdminResponse>> findAdmin(String email) {
+		ResponseStructure<AdminResponse> structure = new ResponseStructure<>();
+		Optional<Admin> recAdmin = adminDao.getAdmin(email);
 		if(recAdmin.isPresent()) {
 			structure.setData(mapToAdminResponse(recAdmin.get()));
 			structure.setMessage("Admin Found");
@@ -61,7 +73,7 @@ public class AdminService {
 	
 	public ResponseEntity<ResponseStructure<String>> deleteAdmin(int id) {
 		ResponseStructure<String> structure = new ResponseStructure<>();
-		Optional<Admin> recAdmin = adminDao.findById(id);
+		Optional<Admin> recAdmin = adminDao.getAdmin(id);
 		if(recAdmin.isPresent()) {
 			Admin dbAdmin = recAdmin.get();
 			structure.setData("Admin Deleted");
@@ -91,10 +103,26 @@ public class AdminService {
 		if(recAdmin.isPresent()) {
 			structure.setData(mapToAdminResponse(recAdmin.get()));
 			structure.setMessage("Admin Verified");
-			structure.setStatusCode(HttpStatus.FOUND.value());
-			return ResponseEntity.status(HttpStatus.FOUND).body(structure);
+			structure.setStatusCode(HttpStatus.OK.value());
+			return ResponseEntity.status(HttpStatus.OK).body(structure);
 		}
 		throw new AdminNotFoundException("No Admin exists with given email and password");
+	}
+	
+	public ResponseEntity<ResponseStructure<AdminResponse>> resetPassword(int admin_id, String password) {
+		ResponseStructure<AdminResponse> structure = new ResponseStructure<>();
+		Optional<Admin> recAdmin = adminDao.getAdmin(admin_id);
+		if(recAdmin.isPresent()) {
+			Admin admin = recAdmin.get();
+			admin.setPassword(password);
+			adminDao.saveOrUpdateAdmin(admin);
+			structure.setData(mapToAdminResponse(admin));
+			structure.setMessage("Password has been reset");
+			structure.setStatusCode(HttpStatus.OK.value());
+			return ResponseEntity.status(HttpStatus.OK).body(structure);
+		}
+		throw new AdminNotFoundException("Admin doesn't exists.");
+		
 	}
 	
 	private Admin mapToAdmin(AdminRequest admin) {

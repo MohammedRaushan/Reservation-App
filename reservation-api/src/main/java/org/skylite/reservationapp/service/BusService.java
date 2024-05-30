@@ -28,7 +28,7 @@ public class BusService {
 
 	public ResponseEntity<ResponseStructure<BusResponse>> saveBus(BusRequest busRequest, int admin_id) {
 		ResponseStructure<BusResponse> structure = new ResponseStructure<>();
-		Optional<Admin> recAdmin = adminDao.findById(admin_id);
+		Optional<Admin> recAdmin = adminDao.getAdmin(admin_id);
 		if (recAdmin.isPresent()) {
 			Admin dbAdmin = recAdmin.get();
 			Bus bus = mapToBus(busRequest);
@@ -71,7 +71,7 @@ public class BusService {
 
 	public ResponseEntity<ResponseStructure<String>> deleteBus(int bus_id, int admin_id) {
 		ResponseStructure<String> structure = new ResponseStructure<>();
-		Optional<Admin> recAdmin = adminDao.findById(admin_id);
+		Optional<Admin> recAdmin = adminDao.getAdmin(admin_id);
 		if (recAdmin.isPresent()) {
 			Optional<Bus> recBus = busDao.getBus(bus_id);
 			if (recBus.isPresent()) {

@@ -6,6 +6,7 @@ import org.skylite.reservationapp.dto.ResponseStructure;
 import org.skylite.reservationapp.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/admins")
 public class AdminController {
@@ -38,6 +40,11 @@ public class AdminController {
 		return service.findAdmin(id);
 	}
 	
+	@GetMapping("/find-by-email")
+	public ResponseEntity<ResponseStructure<AdminResponse>> findAdmin(@RequestParam String email) {
+		return service.findAdmin(email);
+	}
+	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<ResponseStructure<String>> deleteAdmin(@PathVariable int id) {
 		return service.deleteAdmin(id);
@@ -51,5 +58,9 @@ public class AdminController {
 	@GetMapping("/verify-by-email")
 	public ResponseEntity<ResponseStructure<AdminResponse>> verifyAdmin(@RequestParam String email,@RequestParam String  password) {
 		return service.verifyAdmin(email, password);
+	}
+	@PutMapping("/reset-password/{id}")
+	public ResponseEntity<ResponseStructure<AdminResponse>> resetPassword(@PathVariable(name="id") int admin_id, @RequestParam String password) {
+		return service.resetPassword(admin_id, password);
 	}
 }
